@@ -38,21 +38,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.querySelector('.startGame').onclick = function (event) {
       modal.style.display = "none";
+      document.querySelector('.turn').style.display = 'block';
+      document.querySelector('.currentPlayer').innerHTML = currentPlayer;
     };
   }
 
-    document.querySelector('.gameWrapper').addEventListener('click', function (event) {
-      if (event.target.classList.length === 1) {
-        event.target.classList.add(currentPlayer);
-        checkWinner();
-        changePlayer();
-      } else {
-        snackBar();
-      }
-   });
+  document.querySelector('.gameWrapper').addEventListener('click', function (event) {
+    if (event.target.classList.length === 1) {
+      event.target.classList.add(currentPlayer);
+      checkWinner();
+      changePlayer();
+    } else {
+      snackBar();
+    }
+  });
 
   function changePlayer() {
     currentPlayer = currentPlayer === 'x' ? 'o' : 'x';
+    document.querySelector('.currentPlayer').innerHTML = currentPlayer;
   }
 
   function checkWinner() {
@@ -88,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function checkDraw(all) {
-    let counter = 1;
+    let counter = 0;
     all.forEach((field) => {
       if (field.classList[1]) {
         counter++;

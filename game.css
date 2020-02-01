@@ -1,5 +1,13 @@
 body {
   background-color: #222222;
+  color: #fefefe;
+}
+
+.turn {
+  display: none;
+  width: 90vw;
+  max-width: 500px;
+  margin: 0 auto;
 }
 
 .gameWrapper {
