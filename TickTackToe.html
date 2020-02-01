@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TickTackToe</title>
+  <link rel="stylesheet" href="game.css">
+  <script src="gameLogic.js"></script>
+</head>
+<body>
+
+<!-- The Modal -->
+<div id="gameModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content" id="start">
+    <h1>Tick Tack Toe</h1>
+    <p>choose game version:</p>
+    <form>
+      <label for="pvp" class="label">Player vs. Player</label>
+      <input type="radio" id="pvp" name="playType" value="pvp" checked><br>
+      <label for="pvb" class="label">Player vs. Bot</label>
+      <input type="radio" id="pvb" name="playType" value="pvb"><br>
+    </form>
+    <button class="button startGame">Start Game</button>
+  </div>
+
+  <div class="modal-content" id="end">
+    <h1 class="result"></h1>
+    <button class="button startNewGame">Start new Game</button>
+    <button class="button home">Main Menu</button>
+  </div>
+
+</div>
+
+<div class="gameWrapper">
+  <div class="gameField" id="00"></div>
+  <div class="gameField" id="01"></div>
+  <div class="gameField" id="02"></div>
+
+  <div class="gameField" id="10"></div>
+  <div class="gameField" id="11"></div>
+  <div class="gameField" id="12"></div>
+
+  <div class="gameField" id="20"></div>
+  <div class="gameField" id="21"></div>
+  <div class="gameField" id="22"></div>
+</div>
+
+<div id="snackbar">the field is already occupied</div>
+
+</body>
+</html>
