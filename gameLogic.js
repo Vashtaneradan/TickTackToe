@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let winner = '';
   openModal('start', '');
 
+  // Modal
   function openModal(status, winner) {
     clearField();
     let modal = document.querySelector('#gameModal');
@@ -27,22 +28,35 @@ document.addEventListener("DOMContentLoaded", function () {
         break;
     }
 
+    // Modal Start
     document.querySelector('.home').onclick = function (event) {
       modal.style.display = "none";
       openModal('start', '');
     };
 
+    // start new round
     document.querySelector('.startNewGame').onclick = function (event) {
       modal.style.display = "none";
     };
 
+    // initial game start
     document.querySelector('.startGame').onclick = function (event) {
+      if (document.querySelector('#pvb').checked) {
+        let startPlayer = Math.floor(Math.random() * 2) + 1;
+        if (startPlayer === 1) {
+          console.log('Bot is x and starts');
+          launchBot();
+        } else {
+          console.log('Player is x and starts');
+        }
+      }
       modal.style.display = "none";
       document.querySelector('.turn').style.display = 'block';
       document.querySelector('.currentPlayer').innerHTML = currentPlayer;
     };
   }
 
+  // click listener
   document.querySelector('.gameWrapper').addEventListener('click', function (event) {
     if (event.target.classList.length === 1) {
       event.target.classList.add(currentPlayer);
@@ -53,34 +67,39 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
+  function getField() {
+    let allFields = [];
+    allFields.forEach.call(document.querySelectorAll('.gameField'), function (element) {
+      allFields.push(element);
+    });
+    return allFields;
+  }
+
+  // change current Player
   function changePlayer() {
     currentPlayer = currentPlayer === 'x' ? 'o' : 'x';
     document.querySelector('.currentPlayer').innerHTML = currentPlayer;
   }
 
+  // check win conditions
   function checkWinner() {
-    let allFields = [];
-    allFields.forEach.call(document.querySelectorAll('.gameField'), function (element) {
-      allFields.push(element);
-    });
-
-    if (areEqual(allFields[0].classList[1], allFields[1].classList[1], allFields[2].classList[1])) {
+    if (areEqual(0, 1, 2)) {
       winStatus = true;
-    } else if (areEqual(allFields[3].classList[1], allFields[4].classList[1], allFields[5].classList[1])) {
+    } else if (areEqual(3, 4, 5)) {
       winStatus = true;
-    } else if (areEqual(allFields[6].classList[1], allFields[7].classList[1], allFields[8].classList[1])) {
+    } else if (areEqual(6, 7, 8)) {
       winStatus = true;
-    } else if (areEqual(allFields[0].classList[1], allFields[3].classList[1], allFields[6].classList[1])) {
+    } else if (areEqual(0, 3, 6)) {
       winStatus = true;
-    } else if (areEqual(allFields[1].classList[1], allFields[4].classList[1], allFields[7].classList[1])) {
+    } else if (areEqual(1, 4, 7)) {
       winStatus = true;
-    } else if (areEqual(allFields[2].classList[1], allFields[5].classList[1], allFields[8].classList[1])) {
+    } else if (areEqual(2, 5, 8)) {
       winStatus = true;
-    } else if (areEqual(allFields[0].classList[1], allFields[4].classList[1], allFields[8].classList[1])) {
+    } else if (areEqual(0, 4, 8)) {
       winStatus = true;
-    } else if (areEqual(allFields[2].classList[1], allFields[4].classList[1], allFields[6].classList[1])) {
+    } else if (areEqual(2, 4, 6)) {
       winStatus = true;
-    } else if (checkDraw(allFields)) {
+    } else if (checkDraw()) {
       clearField();
       openModal('draw', '');
     }
@@ -90,24 +109,24 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  function checkDraw(all) {
+  function checkDraw() {
+    let allFields = getField();
     let counter = 0;
-    all.forEach((field) => {
+    allFields.forEach((field) => {
       if (field.classList[1]) {
         counter++;
       }
     });
-    if (counter === 9) {
-      return true;
-    }
-    return false;
+    return counter === 9;
   }
 
   function areEqual(a, b, c) {
-    if (a === 'x' && b === 'x' && c === 'x') {
+    let allFields = getField();
+
+    if (allFields[a].classList[1] === 'x' && allFields[b].classList[1] === 'x' && allFields[c].classList[1] === 'x') {
       winner = 'x';
       return true;
-    } else if (a === 'o' && b === 'o' && c === 'o') {
+    } else if (allFields[a].classList[1] === 'o' && allFields[b].classList[1] === 'o' && allFields[c].classList[1] === 'o') {
       winner = 'o';
       return true;
     }
@@ -133,5 +152,27 @@ document.addEventListener("DOMContentLoaded", function () {
     setTimeout(function () {
       snackbar.className = snackbar.className.replace("show", "");
     }, 3000);
+  }
+
+  // Bot Berty
+  function launchBot() {
+    currentPlayer = 'x';
+    let allFields = getField();
+    let corner = Math.floor(Math.random() * 4) + 1;
+    switch (corner) {
+      case 1:
+        allFields[0].classList.add(currentPlayer);
+        break;
+      case 2:
+        allFields[2].classList.add(currentPlayer);
+        break;
+      case 3:
+        allFields[6].classList.add(currentPlayer);
+        break;
+      case 4:
+        allFields[8].classList.add(currentPlayer);
+        break;
+    }
+    changePlayer();
   }
 });
