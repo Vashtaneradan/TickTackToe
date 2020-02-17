@@ -2,7 +2,9 @@ document.addEventListener("DOMContentLoaded", function () {
   let currentPlayer = 'x';
   let winStatus = false;
   let winner = '';
+  let bot = false;
   openModal('start', '');
+
 
   // Modal
   function openModal(status, winner) {
@@ -41,19 +43,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // initial game start
     document.querySelector('.startGame').onclick = function (event) {
-      if (document.querySelector('#pvb').checked) {
-        let startPlayer = Math.floor(Math.random() * 2) + 1;
-        if (startPlayer === 1) {
-          console.log('Bot is x and starts');
-          launchBot();
-        } else {
-          console.log('Player is x and starts');
-        }
-      }
+      preparations();
       modal.style.display = "none";
       document.querySelector('.turn').style.display = 'block';
       document.querySelector('.currentPlayer').innerHTML = currentPlayer;
     };
+  }
+
+  function preparations() {
+    if (document.querySelector('#pvb').checked) {
+      bot = true;
+      let startPlayer = Math.floor(Math.random() * 2) + 1;
+      // launch Berty if he is player 1
+      if (startPlayer === 1) {
+        launchBot();
+      }
+    }
   }
 
   // click listener
@@ -62,6 +67,7 @@ document.addEventListener("DOMContentLoaded", function () {
       event.target.classList.add(currentPlayer);
       checkWinner();
       changePlayer();
+      triggerBot();
     } else {
       snackBar();
     }
@@ -133,6 +139,21 @@ document.addEventListener("DOMContentLoaded", function () {
     return false;
   }
 
+  function twoInRow(a, b, c) {
+    let allFields = getField();
+
+    if (allFields[a].classList[1] === 'x' && allFields[b].classList[1] === 'x' && allFields[c].classList[1] === ''
+      || allFields[c].classList[1] === 'x' && allFields[b].classList[1] === 'x' && allFields[a].classList[1] === ''
+      || allFields[a].classList[1] === 'x' && allFields[c].classList[1] === 'x' && allFields[b].classList[1] === '') {
+      return true;
+    } else if (allFields[a].classList[1] === 'o' && allFields[b].classList[1] === 'o'
+      || allFields[c].classList[1] === 'o' && allFields[b].classList[1] === 'o'
+      || allFields[a].classList[1] === 'o' && allFields[c].classList[1] === 'o') {
+      return true;
+    }
+    return false;
+  }
+
   function clearField() {
     winner = '';
     winStatus = false;
@@ -154,7 +175,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 3000);
   }
 
-  // Bot Berty
+  // +++++++++++++++++++++++ Bot Berty ++++++++++++++++++++++++++++++++++++++++++++++++++
   function launchBot() {
     currentPlayer = 'x';
     let allFields = getField();
@@ -174,5 +195,41 @@ document.addEventListener("DOMContentLoaded", function () {
         break;
     }
     changePlayer();
+  }
+
+  function triggerBot() {
+    console.log('trigger bot');
+    let allFields = getField();
+    if (enemyIsWinning()) {
+
+    } else {
+      let field = Math.floor(Math.random() * 8) + 1;
+      try {
+        allFields[field].classList.add(currentPlayer);
+      } catch (e) {
+        allFields[field + 1].classList.add(currentPlayer);
+      }
+    }
+    changePlayer();
+  }
+
+  function enemyIsWinning(){
+    if (twoInRow(0, 1, 2)) {
+      console.log('zeile 1');
+    } else if (twoInRow(3, 4, 5)) {
+      console.log('zeile 2');
+    } else if (twoInRow(6, 7, 8)) {
+      console.log('zeile 3');
+    } else if (twoInRow(0, 3, 6)) {
+      console.log('reihe 1');
+    } else if (twoInRow(1, 4, 7)) {
+      console.log('reihe 2');
+    } else if (twoInRow(2, 5, 8)) {
+      console.log('reihe 3');
+    } else if (twoInRow(0, 4, 8)) {
+      console.log('diagonal 1');
+    } else if (twoInRow(2, 4, 6)) {
+      console.log('diagonal 2');
+    }
   }
 });
