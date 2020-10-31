@@ -33,14 +33,14 @@ body {
 }
 
 .x {
-  background-image: url("x.png");
+  background-image: url("../images/x.png");
   background-position: center; /* Center the image */
   background-repeat: no-repeat; /* Do not repeat the image */
   background-size: cover;
 }
 
 .o {
-  background-image: url("o.svg");
+  background-image: url("../images/o.svg");
   background-position: center; /* Center the image */
   background-repeat: no-repeat; /* Do not repeat the image */
   background-size: cover;
